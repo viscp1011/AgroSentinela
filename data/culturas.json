@@ -1,0 +1,12 @@
+{
+  "soja":      {"nome": "Soja",            "emoji": "🌱", "umidade_critica": 0.20, "umidade_alvo": 0.26, "prof_raiz_cm": 50, "obs": "Sensível ao déficit hídrico na floração e no enchimento de grãos."},
+  "milho":     {"nome": "Milho",           "emoji": "🌽", "umidade_critica": 0.20, "umidade_alvo": 0.27, "prof_raiz_cm": 60, "obs": "Alta demanda de água no pendoamento (formação da espiga)."},
+  "cana":      {"nome": "Cana-de-açúcar",  "emoji": "🎋", "umidade_critica": 0.18, "umidade_alvo": 0.24, "prof_raiz_cm": 70, "obs": "Cultura rústica; tolera períodos secos moderados."},
+  "feijao":    {"nome": "Feijão",          "emoji": "🫘", "umidade_critica": 0.22, "umidade_alvo": 0.28, "prof_raiz_cm": 40, "obs": "Raiz curta e ciclo rápido; muito sensível à falta de água."},
+  "arroz":     {"nome": "Arroz",           "emoji": "🍚", "umidade_critica": 0.35, "umidade_alvo": 0.42, "prof_raiz_cm": 30, "obs": "Irrigado por inundação; exige solo encharcado (água alta)."},
+  "algodao":   {"nome": "Algodão",         "emoji": "☁️", "umidade_critica": 0.19, "umidade_alvo": 0.25, "prof_raiz_cm": 70, "obs": "Demanda hídrica alta no florescimento e formação de maçãs."},
+  "trigo":     {"nome": "Trigo",           "emoji": "🌾", "umidade_critica": 0.20, "umidade_alvo": 0.26, "prof_raiz_cm": 50, "obs": "Cultura de inverno; déficit no espigamento reduz a produção."},
+  "cafe":      {"nome": "Café",            "emoji": "☕", "umidade_critica": 0.22, "umidade_alvo": 0.28, "prof_raiz_cm": 80, "obs": "Perene; estresse hídrico afeta floração e enchimento do grão."},
+  "mandioca":  {"nome": "Mandioca",        "emoji": "🥔", "umidade_critica": 0.15, "umidade_alvo": 0.20, "prof_raiz_cm": 60, "obs": "Muito rústica e tolerante à seca; baixa exigência de água."},
+  "sorgo":     {"nome": "Sorgo",           "emoji": "🟤", "umidade_critica": 0.16, "umidade_alvo": 0.22, "prof_raiz_cm": 60, "obs": "Tolerante à seca; boa alternativa em regiões secas."}
+}

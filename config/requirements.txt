@@ -1,0 +1,16 @@
+# AgroSentinela - dependencias
+requests
+pandas
+numpy
+scikit-learn
+tensorflow-cpu
+deap
+matplotlib
+fastapi
+uvicorn
+gTTS
+# Opcionais (voz offline / STT com microfone):
+# pyttsx3
+# SpeechRecognition
+# pyaudio
+# boto3  (apenas para deploy AWS real)

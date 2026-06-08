@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroSentinela - Painel do Produtor</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span class="leaf">🌱</span>
+      <div>
+        <div class="marca">Agro<span>Sentinela</span></div>
+        <div class="subtitulo">O seu ajudante de irrigação — Ribeirão Preto / SP</div>
+      </div>
+    </div>
+    <div class="clima" id="clima">
+      <span class="clima-icone">☀️</span>
+      <div>
+        <div class="clima-temp"><span id="c-temp">--</span>°C <span class="clima-tag">agora</span></div>
+        <div class="clima-extra" id="c-extra">carregando clima...</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="status-linha">
+    <span id="status" class="status-conexao demo">verificando...</span>
+    <span class="dica">Cada cartão é um sensor (ESP32) no campo. Toque para ver os detalhes; troque a cultura no seletor.</span>
+  </div>
+
+  <h1 class="secao-titulo">🚜 Meus campos</h1>
+  <section class="campos" id="campos"></section>
+
+  <section id="detalhe" class="detalhe oculto">
+    <h1 class="secao-titulo">📊 Detalhes: <span id="d-nome"></span></h1>
+    <p id="d-obs" class="obs-cultura"></p>
+
+    <div class="ia-ficha">
+      <div class="ia-chip lstm">🧠 <b>IA 1 · Rede Neural (LSTM)</b><span>aprendeu com 17.496h reais e prevê a umidade</span></div>
+      <div class="ia-chip ag">🧬 <b>IA 2 · Algoritmo Genético</b><span>testa milhares de planos e escolhe o que gasta menos água</span></div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi" id="kpi-status"><div class="rotulo">Situação</div><div class="valor" id="d-status">--</div></div>
+      <div class="kpi agua"><div class="rotulo">Quanto regar hoje</div><div class="valor"><span id="d-agua">--</span> <span class="unidade">mm</span></div><div class="rotulo" id="d-agua-litros"></div></div>
+      <div class="kpi"><div class="rotulo">Umidade da terra agora</div><div class="valor"><span id="d-umid">--</span></div><div class="rotulo" id="d-umid-label"></div></div>
+      <div class="kpi economia"><div class="rotulo">Economia de água</div><div class="valor"><span id="d-economia">--</span> <span class="unidade">%</span></div><div class="rotulo">vs. regar no escuro</div></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>🧠 Previsão da terra (próximas 24h) <span class="tag">Rede Neural LSTM</span></h2>
+        <p class="ajuda">A linha mostra como a umidade deve evoluir. A faixa vermelha embaixo é a zona de risco: se a linha entrar nela, a planta passa sede.</p>
+        <canvas id="g-previsao"></canvas>
+      </div>
+      <div class="card">
+        <h2>🧬 Plano de rega otimizado <span class="tag">Algoritmo Genético</span></h2>
+        <p class="ajuda">Barras azuis = água a dar por hora. Linha verde = a terra COM o plano. Linha vermelha tracejada = como ficaria SEM regar.</p>
+        <canvas id="g-irrigacao"></canvas>
+      </div>
+    </div>
+
+    <button class="btn-voz" id="btn-voz">🔊 Ouvir o aviso por voz</button>
+  </section>
+
+  <footer>
+    <p class="concorrer">QUERO CONCORRER</p>
+    <p>AgroSentinela — Global Solution 2026.1 — FIAP | Vitorio Stevanatto Compri Paciulo</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

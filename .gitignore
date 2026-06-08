@@ -1,0 +1,13 @@
+# Ambiente virtual Python (regeravel via RODAR_AGROSENTINELA.bat)
+.venv/
+__pycache__/
+*.pyc
+
+# Firmware compilado do ESP32 (regeravel via COMPILAR_ESP32.bat)
+build/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+PUBLICAR_GITHUB.bat

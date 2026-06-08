@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  AgroSentinela - Infraestrutura serverless (SIMULADA) para alertas de risco
+  hidrico. Caps. 5 (AWS assincrono/alertas) e 6 (Microsservicos/CloudFormation).
+  Arquitetura sem servidor, de baixissimo custo. NAO implantar sem revisao de custos.
+
+Parameters:
+  EmailProdutor:
+    Type: String
+    Default: produtor@exemplo.com.br
+    Description: E-mail/telefone que recebe os alertas via SNS.
+  LimiarCritico:
+    Type: Number
+    Default: 0.20
+    Description: Umidade do solo (m3/m3) abaixo da qual gera-se alerta.
+
+Resources:
+  FilaLeituras:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: agrosentinela-leituras
+      VisibilityTimeout: 60
+
+  TopicoAlertas:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: agrosentinela-alertas
+      DisplayName: AgroSentinela
+
+  AssinaturaEmail:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref TopicoAlertas
+      Protocol: email
+      Endpoint: !Ref EmailProdutor
+
+  TabelaLeituras:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: agrosentinela-leituras
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id_fazenda
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id_fazenda
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+
+  PapelLambda:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: agrosentinela-min
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: [sns:Publish]
+                Resource: !Ref TopicoAlertas
+              - Effect: Allow
+                Action: [dynamodb:PutItem]
+                Resource: !GetAtt TabelaLeituras.Arn
+              - Effect: Allow
+                Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes]
+                Resource: !GetAtt FilaLeituras.Arn
+              - Effect: Allow
+                Action: [logs:CreateLogGroup, logs:CreateLogStream, logs:PutLogEvents]
+                Resource: "*"
+
+  FuncaoAvaliaRisco:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: agrosentinela-avalia-risco
+      Runtime: python3.12
+      Handler: lambda_alerta.handler
+      Timeout: 30
+      Role: !GetAtt PapelLambda.Arn
+      Environment:
+        Variables:
+          TOPICO_ALERTAS: !Ref TopicoAlertas
+          TABELA: !Ref TabelaLeituras
+          LIMIAR_CRITICO: !Ref LimiarCritico
+      Code:
+        ZipFile: |
+          def handler(event, context):
+              return {"status": "ver lambda_alerta.py"}
+
+  GatilhoFila:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt FilaLeituras.Arn
+      FunctionName: !Ref FuncaoAvaliaRisco
+      BatchSize: 10
+
+Outputs:
+  UrlFila:
+    Description: URL da fila SQS de ingestao de leituras
+    Value: !Ref FilaLeituras
+  ArnTopico:
+    Description: ARN do topico SNS de alertas
+    Value: !Ref TopicoAlertas
